@@ -1,58 +1,35 @@
 // Problem 1: Complete the secondLargest function which takes in an array of numbers in input and return the second biggest number in the array. (without using sort)?
 function secondLargest(array) {
-   let max=array[0];
+  let max = array[0];
   let x;
- // console.log(array[0])
-  for(x in array)
-  {
-      if(max<=array[x])
-      {
-        max=array[x];
-      }
+  for (x in array) {
+    if (max <= array[x]) max = array[x];
   }
   let second_max;
-  if(max==array[0])
-  {
-    second_max=array[1];
+  if (max == array[0]) second_max = array[1];
+  else second_max = array[0];
+  for (x in array) {
+    if (second_max < array[x] && max != array[x]) second_max = array[x];
   }
-  else
-  {
-    second_max=array[0];
-  }
-  for(x in array)
-    {
-      if(second_max<array[x]&&max!=array[x])
-        {
-          second_max=array[x];
-        }
-    }
-  console.log(second_max)
   return second_max;
 }
-
-
 // Problem 2: Complete the calculateFrequency function that takes lowercase string as input and returns frequency of all english alphabet. (using only array, no in-built function)
-function calculateFrequency(string) {
-    var object = new Object();
-for (let x = 0; x < string.length; x++) {
-  if(95<=string[x].codePointAt() && 122>=string[x].codePointAt())
-  {
-  let count = 0;
-  for (let y = 0; y < string.length; y++) {
-    if (string[x] == string[y])
-      count++;
+function calculateFrequency(str) {
+  var obj = {};
+  for (let x = 0; x < str.length; x++) {
+    if (95 <= str[x].codePointAt() && 122 >= str[x].codePointAt()) {
+      let count = 1;
+      if (obj[str[x]] >= 1) {
+        count = obj[str[x]] + 1;
+        obj[str[x]] = count;
+      } else obj[str[x]] = count;
+    }
   }
-  object[string[x]] = count;
+  return obj;
 }
-}
-return object;
-}
-
-
-
 // Problem 3: Complete the flatten function that takes a JS Object, returns a JS Object in flatten format (compressed)
 function flatten(unflatObject) {
-  let obj=unflatObject;
+  let obj = unflatObject;
   let final = {};
   for (let x in obj) {
     if (typeof obj[x] == "object") {
@@ -65,19 +42,41 @@ function flatten(unflatObject) {
     }
   }
   return final;
-  
-  
 }
-
-
-
 // Problem 4: Complete the unflatten function that takes a JS Object, returns a JS Object in unflatten format
-function unflatten(flatObject) {
-  // Write your code here
+//let obj = {
+//   flatJSON: false,
+//   "i.am.not.so.flat": true,
+//   "i.am.not.so.unflat": false,
+//   "i.am.a": "tree",
+//   "dates.0.day": 1,
+//   "dates.1.day": 8947
+// };
+function unflatten(obj) {
+  var result = {},
+    temp,
+    substrings,
+    property,
+    i;
+  for (property in obj) {
+    substrings = property.split(".");
+    temp = result;
+    for (i = 0; i < substrings.length - 1; i++) {
+      if (!(substrings[i] in temp)) {
+        if (isFinite(substrings[i])) {
+          temp[substrings[i]] = [];
+        } else {
+          temp[substrings[i]] = {};
+        }
+      }
+      temp = temp[substrings[i]];
+    }
+    temp[substrings[substrings.length - 1]] = obj[property];
+  }
+  return result;
 }
-
-
-//Problem 4
+console.log(unflatten(obj));
+//Problem 5
 // Create a program which takes
 // Input: ['dog', 'chicken', 'cat', 'dog', 'chicken', 'chicken', 'rabbit'];
 // Gives
@@ -88,17 +87,14 @@ function unflatten(flatObject) {
 //   cat: 1,
 //   rabbit: 1
 // }
-function animal(array) {
-    let obj = new Object();
-    for (let x in array) {
-      let count = 0;
-      for (let y in array) {
-        if (array[x] == array[y]) count++;
-      }
-      obj[array[x]] = count;
-    }
-    return obj;
+function animal(arr) {
+  let obj = {};
+  for (let x = 0; x < arr.length; x++) {
+    let count = 1;
+    if (obj[arr[x]] >= 1) {
+      count = obj[arr[x]] + 1;
+      obj[arr[x]] = count;
+    } else obj[arr[x]] = count;
   }
-  let array = ["dog", "chicken", "cat", "dog", "chicken", "chicken", "rabbit"];
-  console.log(animal(array));
-  
+  return obj;
+}

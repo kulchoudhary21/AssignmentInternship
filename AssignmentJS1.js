@@ -37,9 +37,7 @@ function flatten(unflatObject) {
       for (let y in temp) {
         final[x + "." + y] = temp[y];
       }
-    } else {
-      final[x] = obj[x];
-    }
+    } else final[x] = obj[x];
   }
   return final;
 }
